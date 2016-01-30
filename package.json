@@ -1,21 +1,21 @@
 {
   "name": "mocked-api",
+  "author": "Jasper Haggenburg",
   "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "description": "A server to mock API responses with local JSON-files and configurable overrides.",
+  "main": "server.js",
+  "bin": "./bin/mocked-api",
   "scripts": {
-    "dev": "nodemon test.js",
-    "test": "mocha --compilers js:babel-register"
     "test": "mocha --compilers js:babel-register",
     "lint": "eslint ."
   },
-  "author": "",
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.4.5",
     "babel-eslint": "^4.1.6",
     "babel-register": "^6.4.3",
     "chai": "^3.5.0",
+    "command-line-args": "^2.1.4",
     "eslint": "^1.10.3",
     "express": "^4.13.4",
     "fetch": "^1.0.0",

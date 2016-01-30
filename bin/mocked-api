@@ -1,0 +1,33 @@
+#! /usr/bin/env node
+
+var commandLineArgs = require('command-line-args');
+
+var cli = commandLineArgs([
+  {
+    name: 'help',
+    alias: 'h'
+  }, {
+    name: 'port',
+    alias: 'p',
+    type: Number,
+    defaultValue: 6000,
+    description: 'The port you want the server to be running on.'
+  }, {
+    name: 'dir',
+    alias: 'd',
+    type:String,
+    defaultValue: './mocks',
+    description: 'The directory where your json-files are.'
+  },
+]);
+
+var options = cli.parse();
+
+if(options.help) {
+  console.log(cli.getUsage());
+  return;
+}
+
+var mockedApi = require('../src/server').init(options, function() {
+  console.log('Mocked API available on http://localhost:' + options.port);
+});
