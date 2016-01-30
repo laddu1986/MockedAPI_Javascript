@@ -20,12 +20,16 @@ module.exports = class Server {
   }
 
   start(callback) {
+    if (this.server) {
+      return callback();
+    }
     this.server = this.express.listen(this.config.port, callback);
   }
 
   stop() {
     if (this.server) {
       this.server.close();
+      this.server = null;
     }
   }
 
