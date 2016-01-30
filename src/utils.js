@@ -1,5 +1,7 @@
-var FS = require('fs');
-var JsonPointer = require('json-pointer');
+'use strict';
+
+const FS = require('fs');
+const JsonPointer = require('json-pointer');
 
 module.exports = {
   fileExists: function fileExists(filePath) {
@@ -23,7 +25,7 @@ module.exports = {
   },
 
   mutateJson: function mutateJson(req, json, mutations) {
-    var mutated = JSON.parse(json);
+    const mutated = JSON.parse(json);
     mutations.forEach((mutation) => {
       if (req.path == mutation.path) {
         JsonPointer.set(mutated, mutation.pointer, mutation.value);

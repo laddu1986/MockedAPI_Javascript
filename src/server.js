@@ -1,14 +1,16 @@
-var express = require('express');
-var Path = require('path');
+'use strict';
 
-var utils = require('./utils');
+const express = require('express');
+const Path = require('path');
 
-var app = express();
-var server; // set by listen()
+const utils = require('./utils');
 
-var jsonMutations = [];
-var statusMutations = [];
-var respondToPath = null;
+const app = express();
+let server; // set in init
+
+let jsonMutations = [];
+let statusMutations = [];
+let respondToPath = null;
 
 module.exports = {
   init: function(config, callback) {
@@ -30,7 +32,7 @@ module.exports = {
         .catch(err => {
           res
             .status(err[0])
-            .send(err[1])
+            .send(err[1]);
         });
     });
 
@@ -46,7 +48,9 @@ module.exports = {
   },
 
   stop: function() {
-    if (server) server.close();
+    if (server) {
+      server.close();
+    }
   },
 
   respondTo: function(path) {

@@ -6,13 +6,17 @@
   "scripts": {
     "dev": "nodemon test.js",
     "test": "mocha --compilers js:babel-register"
+    "test": "mocha --compilers js:babel-register",
+    "lint": "eslint ."
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.4.5",
+    "babel-eslint": "^4.1.6",
     "babel-register": "^6.4.3",
     "chai": "^3.5.0",
+    "eslint": "^1.10.3",
     "express": "^4.13.4",
     "fetch": "^1.0.0",
     "json-pointer": "^0.3.0",
