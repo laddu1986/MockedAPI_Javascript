@@ -102,6 +102,8 @@ Anytime you need one of those API's to override, make sure you use that same nam
 const userApi = require('mocked-api')('user');
 
 describe('user', () => {
+  beforeEach(() => userApi.reset());
+
   describe('when logged in', () => {
     it('shows avatar', () => {
       const kitty = 'http://placekitten.com/200/300';
