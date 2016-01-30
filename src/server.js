@@ -41,6 +41,14 @@ function mutateJson(req, json) {
   return mutated;
 }
 
+function getMutatedStatus(req) {
+  const mutationForThisPath = statusMutations.filter(m => m.path == req.path);
+  if (mutationForThisPath.length > 0) {
+    return mutationForThisPath[0].status;
+  }
+  return 200;
+}
+
 module.exports = {
   init: function(config, callback) {
     app.get('*', (req, res) => {
@@ -49,14 +57,12 @@ module.exports = {
         .then(() => loadJson(filePath))
         .then((json) => mutateJson(req, json))
         .then((mutatedJson) => {
-          // override status
-          const statusMutationsForThisPath = statusMutations.filter(mutation => mutation.path == req.path);
-          res.status(statusMutationsForThisPath.length > 0 ? statusMutationsForThisPath[0].status : 200);
-
-          // all done
-          res.send(mutatedJson);
+          const status = getMutatedStatus(req);
+          res.status(status).send(mutatedJson);
         })
-        .catch((err) => res.status(err[0]).send(err[1]));
+        .catch((err) => {
+          res.status(err[0]).send(err[1])
+        });
     });
 
     server = app.listen(config.port, () => {
