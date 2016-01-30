@@ -1,0 +1,21 @@
+{
+  "name": "mocked-api",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon test.js",
+    "test": "mocha --compilers js:babel-register"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.4.5",
+    "babel-register": "^6.4.3",
+    "chai": "^3.5.0",
+    "express": "^4.13.4",
+    "fetch": "^1.0.0",
+    "json-pointer": "^0.3.0",
+    "mocha": "^2.4.5"
+  }
+}
