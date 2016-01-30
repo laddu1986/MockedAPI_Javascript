@@ -9,7 +9,7 @@ $ npm install mocked-api --save-dev
 
 ## Usage
 
-### First: Configuration
+### Configuration
 To get things running, to use in your test-suite for example, initialize it like this:
 
 ```js
@@ -25,15 +25,15 @@ mockedApi.start(() => {
 });
 ```
 
-> You can do this once, in the script that's running your test-suite. The server will run until that process is killed.
+You can do this once, in the script that's running your test-suite. The server will run until that process is killed.
 
-### Next: JSON-files
+### JSON-files
 Place JSON-files in the configured directory to accomodate the responses. You can use nested directories to simulate a path-hierarchy. For example, the file at `./mocks/content/article/42.json` will be served at `http://localhost:3000/content/article/42.json` for the configuration above.
 
-### Extra: Custom responses
+### Custom responses
 Once initialized, you can mutate responses with the following methods:
 
-```
+```js
 api
   .respondTo(path) // Defines the path you're about to change
   .andReplace(pointer, value) // Replace a property in your JSON-file. This is based on JSON-pointers, described in [RFC 6901](https://tools.ietf.org/html/rfc6901).
