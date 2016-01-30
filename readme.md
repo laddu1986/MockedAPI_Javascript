@@ -137,6 +137,8 @@ You can also run the server standalone, from your CLI:
 $ node_modules/.bin/mocked-api --port 6000 --dir ./mocks
 ```
 
+This will serve JSON-files in `./mocks` at `localhost:6000`, but that's it. Custom mutation of responses is not possible through the CLI.
+
 ## Notes
 
 - POST/PUT/DELETE are not yet implemented. If you need one of those, please ping me and give me some time to work it out.
