@@ -31,7 +31,7 @@ describe('file loading', () => {
   });
 
   it('returns json from file nested in mock-dir', (done) => {
-    fetchUrl(`${baseUrl}/api/content/42.json`, (err, meta, body) => {
+    fetchUrl(`${baseUrl}/deeply/nested/42.json`, (err, meta, body) => {
       expect(meta.status).to.equal(200);
 
       const json = JSON.parse(body.toString());

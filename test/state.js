@@ -48,7 +48,7 @@ describe('state', () => {
       expect(meta.status).to.equal(666);
       expect(JSON.parse(body.toString()).title).to.equal('Changed title');
 
-      fetchUrl(`${baseUrl}/api/content/42.json`, (err2, meta2, body2) => {
+      fetchUrl(`${baseUrl}/deeply/nested/42.json`, (err2, meta2, body2) => {
         expect(meta2.status).to.equal(200);
         expect(JSON.parse(body2.toString()).title).to.equal('Nested mock');
         done();
