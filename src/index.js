@@ -6,8 +6,8 @@ const Server = require('./server');
 const instances = [];
 
 module.exports = function(a, b) {
-  const name = b ? a : null;
-  const config = b ? b : a;
+  const name = typeof a === 'string' ? a : null;
+  const config = name && b ? b : a;
 
   const cached = instances.filter(i => i.name == name);
   if (cached.length > 0) {

@@ -55,7 +55,7 @@ describe('named', () => {
   });
 
   it('it returns cached server A', (done) => {
-    serverA = mockedApi('a', configA);
+    serverA = mockedApi('a');
 
     expect(serverA.config).to.eql(configA);
     expect(serverA.server).to.exist;
@@ -71,7 +71,7 @@ describe('named', () => {
   });
 
   it('it returns cached server B', (done) => {
-    serverB = mockedApi('b', configB);
+    serverB = mockedApi('b');
 
     expect(serverB.config).to.eql(configB);
     expect(serverB.server).to.exist;
