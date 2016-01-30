@@ -28,6 +28,6 @@ if(options.help) {
   return;
 }
 
-var mockedApi = require('../src/server').init(options, function() {
+var mockedApi = require('../src')(options).start(function() {
   console.log('Mocked API available on http://localhost:' + options.port);
 });

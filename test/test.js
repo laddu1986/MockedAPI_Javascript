@@ -1,16 +1,13 @@
-'use strict';
-
 const fetchUrl = require('fetch').fetchUrl;
 const expect = require('chai').expect;
 
-const mockedServer = require('../src/server');
-
 const config = { port:3000, dir:`${__dirname}/mocks` };
+const mockedServer = require('../src')(config);
 const baseUrl = 'http://localhost:3000';
 
 describe('mockedServer', () => {
   before((done) => {
-    mockedServer.init(config, done);
+    mockedServer.start(done);
   });
 
   after(() => {
