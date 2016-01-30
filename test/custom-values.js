@@ -2,24 +2,24 @@ const fetchUrl = require('fetch').fetchUrl;
 const expect = require('chai').expect;
 
 const config = { port:3000, dir:`${__dirname}/mocks` };
-const mockedServer = require('../src')(config);
+const mockedApi = require('../src')(config);
 const baseUrl = 'http://localhost:3000';
 
 describe('custom values', () => {
   before((done) => {
-    mockedServer.start(done);
+    mockedApi.start(done);
   });
 
   after(() => {
-    mockedServer.stop();
+    mockedApi.stop();
   });
 
   beforeEach(() => {
-    mockedServer.reset();
+    mockedApi.reset();
   });
 
   it('returns json with custom title', (done) => {
-    mockedServer
+    mockedApi
       .respondTo('/42.json')
       .andReplace('/title', 'changed title');
 
@@ -31,7 +31,7 @@ describe('custom values', () => {
   });
 
   it('returns json with custom list', (done) => {
-    mockedServer
+    mockedApi
       .respondTo('/42.json')
       .andReplace('/list', [42]);
 
@@ -43,7 +43,7 @@ describe('custom values', () => {
   });
 
   it('returns json with custom list item', (done) => {
-    mockedServer
+    mockedApi
       .respondTo('/42.json')
       .andReplace('/list/2', 42);
 

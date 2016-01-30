@@ -2,24 +2,24 @@ const fetchUrl = require('fetch').fetchUrl;
 const expect = require('chai').expect;
 
 const config = { port:3000, dir:`${__dirname}/mocks` };
-const mockedServer = require('../src')(config);
+const mockedApi = require('../src')(config);
 const baseUrl = 'http://localhost:3000';
 
 describe('state', () => {
   before((done) => {
-    mockedServer.start(done);
+    mockedApi.start(done);
   });
 
   after(() => {
-    mockedServer.stop();
+    mockedApi.stop();
   });
 
   beforeEach(() => {
-    mockedServer.reset();
+    mockedApi.reset();
   });
 
   it('resets to original behaviour', (done) => {
-    mockedServer
+    mockedApi
       .respondTo('/42.json')
       .andReplace('/title', 'Changed title')
       .withStatus(666);
@@ -28,7 +28,7 @@ describe('state', () => {
       expect(meta.status).to.equal(666);
       expect(JSON.parse(body.toString()).title).to.equal('Changed title');
 
-      mockedServer.reset();
+      mockedApi.reset();
 
       fetchUrl(`${baseUrl}/42.json`, (err2, meta2, body2) => {
         expect(meta2.status).to.equal(200);
@@ -39,7 +39,7 @@ describe('state', () => {
   });
 
   it('returns json for set URL only', (done) => {
-    mockedServer
+    mockedApi
       .respondTo('/42.json')
       .andReplace('/title', 'Changed title')
       .withStatus(666);

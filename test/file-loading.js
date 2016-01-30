@@ -2,20 +2,20 @@ const fetchUrl = require('fetch').fetchUrl;
 const expect = require('chai').expect;
 
 const config = { port:3000, dir:`${__dirname}/mocks` };
-const mockedServer = require('../src')(config);
+const mockedApi = require('../src')(config);
 const baseUrl = 'http://localhost:3000';
 
 describe('file loading', () => {
   before((done) => {
-    mockedServer.start(done);
+    mockedApi.start(done);
   });
 
   after(() => {
-    mockedServer.stop();
+    mockedApi.stop();
   });
 
   beforeEach(() => {
-    mockedServer.reset();
+    mockedApi.reset();
   });
 
   it('returns json from file directly in mock-dir', (done) => {

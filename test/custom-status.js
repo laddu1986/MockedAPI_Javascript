@@ -2,24 +2,24 @@ const fetchUrl = require('fetch').fetchUrl;
 const expect = require('chai').expect;
 
 const config = { port:3000, dir:`${__dirname}/mocks` };
-const mockedServer = require('../src')(config);
+const mockedApi = require('../src')(config);
 const baseUrl = 'http://localhost:3000';
 
 describe('custom status', () => {
   before((done) => {
-    mockedServer.start(done);
+    mockedApi.start(done);
   });
 
   after(() => {
-    mockedServer.stop();
+    mockedApi.stop();
   });
 
   beforeEach(() => {
-    mockedServer.reset();
+    mockedApi.reset();
   });
 
   it('returns json with custom status', (done) => {
-    mockedServer
+    mockedApi
       .respondTo('/42.json')
       .withStatus(666);
 
@@ -30,7 +30,7 @@ describe('custom status', () => {
   });
 
   it('returns json with custom status and title', (done) => {
-    mockedServer
+    mockedApi
       .respondTo('/42.json')
       .andReplace('/title', 'changed title')
       .withStatus(666);
