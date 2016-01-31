@@ -1,7 +1,7 @@
 {
   "name": "mocked-api",
   "author": "Jasper Haggenburg",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A server to mock API responses with local JSON-files and configurable overrides.",
   "main": "src/index.js",
   "bin": "./bin/mocked-api",
