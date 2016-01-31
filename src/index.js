@@ -1,7 +1,5 @@
 'use strict';
 
-require('babel-register');
-
 const Server = require('./server');
 const instances = [];
 
