@@ -10,16 +10,14 @@
     "lint": "eslint ."
   },
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "babel-core": "^6.4.5",
     "babel-preset-es2015": "^6.3.13",
     "babel-register": "^6.4.3",
+    "babel-eslint": "^4.1.6",
     "command-line-args": "^2.1.4",
     "express": "^4.13.4",
-    "json-pointer": "^0.3.0"
-  },
-  "devDependencies": {
-    "babel-eslint": "^4.1.6",
+    "json-pointer": "^0.3.0",
     "chai": "^3.5.0",
     "eslint": "^1.10.3",
     "fetch": "^1.0.0",
