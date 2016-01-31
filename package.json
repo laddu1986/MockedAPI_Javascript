@@ -3,7 +3,7 @@
   "author": "Jasper Haggenburg",
   "version": "0.1.0",
   "description": "A server to mock API responses with local JSON-files and configurable overrides.",
-  "main": "server.js",
+  "main": "src/index.js",
   "bin": "./bin/mocked-api",
   "scripts": {
     "test": "mocha --compilers js:babel-register",
