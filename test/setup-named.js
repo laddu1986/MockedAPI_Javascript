@@ -1,6 +1,7 @@
 const fetchUrl = require('fetch').fetchUrl;
 const expect = require('chai').expect;
 
+delete require.cache[require.resolve('../src')];
 const mockedApi = require('../src');
 
 const configA = { port:6000, dir:`${__dirname}/mocks` };
@@ -12,14 +13,18 @@ const baseUrlB = 'http://localhost:6001';
 let serverA;
 let serverB;
 
-describe('named', () => {
+describe('setup named', () => {
   after(() => {
-    serverA.stop();
-    serverB.stop();
+    if (serverA) {
+      serverA.stop();
+    }
+    if (serverB) {
+      serverB.stop();
+    }
   });
 
   it('starts server A', (done) => {
-    serverA = mockedApi('a', configA);
+    serverA = mockedApi.setup('a', configA);
 
     expect(serverA.config).to.eql(configA);
     expect(serverA.server).not.to.exist;
@@ -37,7 +42,7 @@ describe('named', () => {
   });
 
   it('starts server B', (done) => {
-    serverB = mockedApi('b', configB);
+    serverB = mockedApi.setup('b', configB);
 
     expect(serverB.config).to.eql(configB);
     expect(serverB.server).not.to.exist;
@@ -54,8 +59,8 @@ describe('named', () => {
     });
   });
 
-  it('it returns cached server A', (done) => {
-    serverA = mockedApi('a');
+  it('returns cached server A', (done) => {
+    serverA = mockedApi.get('a');
 
     expect(serverA.config).to.eql(configA);
     expect(serverA.server).to.exist;
@@ -70,8 +75,8 @@ describe('named', () => {
     });
   });
 
-  it('it returns cached server B', (done) => {
-    serverB = mockedApi('b');
+  it('returns cached server B', (done) => {
+    serverB = mockedApi.get('b');
 
     expect(serverB.config).to.eql(configB);
     expect(serverB.server).to.exist;

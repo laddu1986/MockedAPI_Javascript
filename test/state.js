@@ -1,9 +1,11 @@
 const fetchUrl = require('fetch').fetchUrl;
 const expect = require('chai').expect;
 
-const config = { port:3000, dir:`${__dirname}/mocks` };
-const mockedApi = require('../src')(config);
 const baseUrl = 'http://localhost:3000';
+const config = { port:3000, dir:`${__dirname}/mocks` };
+
+delete require.cache[require.resolve('../src')];
+const mockedApi = require('../src').setup(config);
 
 describe('state', () => {
   before((done) => {

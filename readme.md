@@ -13,19 +13,17 @@ $ npm install mocked-api --save-dev
 To get things running, to use in your test-suite for example, initialize it like this:
 
 ```js
-const MockedApi = require('mocked-api');
-
-const mockedApi = MockedApi({
+const api = require('mocked-api').setup({
   port: 3000, // port where you want the API to run on
   dir: './mocks' // directory where your JSON-files live
 });
 
-mockedApi.start(() => {
+api.start(() => {
   console.log('API ready')
 });
 ```
 
-You can do this once, in the script that's running your test-suite. The server will run until that process is killed.
+You can do this once (like in a script that's running your test-suite). The server will keep running until that process is killed, so you don't have to setup the server for every single test.
 
 ### JSON-files
 Place JSON-files in the configured directory to accomodate the responses. You can use nested directories to simulate a path-hierarchy. For example, the file at `./mocks/content/article/42.json` will be served at `http://localhost:3000/content/article/42.json` for the configuration above.
@@ -34,6 +32,8 @@ Place JSON-files in the configured directory to accomodate the responses. You ca
 Once initialized, you can mutate responses with the following methods:
 
 ```js
+const api = require('mocked-api').get();
+
 api
   .respondTo(path) // Defines the path you're about to change
   .andReplace(pointer, value) // Replace a property in your JSON-file. This is based on JSON-pointers, described in [RFC 6901](https://tools.ietf.org/html/rfc6901).
@@ -42,7 +42,7 @@ api
 api.reset() // Removes _all_ custom mutations.
 ```
 
-You can use these methods to make small changes in a basic response and test your UI for every change you make. This way your tests can be small and specific, and still cover a lot of edge-cases.
+You can use these methods to make small changes in a response and test your UI for every little variation that you make. This way your tests can be small and specific, and still cover a lot of edge-cases.
 
 The following example is based on mocha/chai/jsdom, but you can use it similarly in other environments:
 
@@ -50,7 +50,7 @@ The following example is based on mocha/chai/jsdom, but you can use it similarly
 // MockedApi is already initialized and
 // configured somewhere else, so we can
 // use it right away.
-const api = require('mocked-api')();
+const api = require('mocked-api').get();
 
 describe('article', () => {
   beforeEach(() => {
@@ -88,18 +88,18 @@ describe('article', () => {
 ```
 
 ### Two API's at the same time
-You can run multiple instances of MockedApi simultaneously. For that, pass it a name when you initialize each:
+You can run multiple instances of MockedApi simultaneously. For that, pass it a name when you setup each:
 
 ```js
 const MockedApi = require('mocked-api');
-const userApi = MockedApi('user', { port: 3000, dir: './mocks/user' });
-const blogApi = MockedApi('blog', { port: 3001, dir: './mocks/user' });
+const userApi = MockedApi.setup('user', { port: 3000, dir: './mocks/user' });
+const blogApi = MockedApi.setup('blog', { port: 3001, dir: './mocks/blog' });
 ```
 
 Anytime you need one of those API's to override, make sure you use that same name:
 
 ```js
-const userApi = require('mocked-api')('user');
+const userApi = require('mocked-api').get('user');
 
 describe('user', () => {
   beforeEach(() => userApi.reset());
