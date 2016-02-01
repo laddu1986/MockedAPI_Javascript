@@ -18,6 +18,7 @@ module.exports = class Server {
     this.statusMutations = [];
     this.respondToPath = null;
     this.responseHandler = () => {};
+    return this;
   }
 
   start(callback) {
