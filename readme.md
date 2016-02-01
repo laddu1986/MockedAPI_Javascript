@@ -37,9 +37,11 @@ const api = require('mocked-api').get();
 api
   .respondTo(path) // Defines the path you're about to change
   .andReplace(pointer, value) // Replace a property in your JSON-file. This is based on JSON-pointers, described in [RFC 6901](https://tools.ietf.org/html/rfc6901).
-  .withStatus(status) // Custom status-code (`200`, `404`, `500`, etc).
+  .withStatus(status) // Custom status-code (`200`, `404`, `500`, etc)
 
-api.reset() // Removes _all_ custom mutations.
+api
+  .onResponse((status, body) => {}) // Callback fired for every request, handy for debugging
+  .reset() // Removes _all_ custom mutations
 ```
 
 You can use these methods to make small changes in a response and test your UI for every little variation that you make. This way your tests can be small and specific, and still cover a lot of edge-cases.

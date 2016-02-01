@@ -17,6 +17,7 @@ module.exports = class Server {
     this.jsonMutations = [];
     this.statusMutations = [];
     this.respondToPath = null;
+    this.responseHandler = () => {};
   }
 
   start(callback) {
@@ -44,14 +45,14 @@ module.exports = class Server {
         return this._mutateJson(req, json);
       })
       .then(mutatedJson => {
-        res
-          .status(this._getMutatedStatus(req))
-          .send(mutatedJson);
+        const status = this._getMutatedStatus(req);
+        const body = mutatedJson;
+        this.responseHandler(status, body);
+        res.status(status).send(body);
       })
       .catch(err => {
-        res
-          .status(err[0])
-          .send(err[1]);
+        this.responseHandler(err[0], err[1]);
+        res.status(err[0]).send(err[1]);
       });
   }
 
@@ -67,6 +68,11 @@ module.exports = class Server {
 
   withStatus(status) {
     this.statusMutations.push({ path:this.respondToPath, status:status });
+    return this;
+  }
+
+  onResponse(fn) {
+    this.responseHandler = fn;
     return this;
   }
 
