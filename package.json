@@ -3,6 +3,7 @@
   "author": "Jasper Haggenburg",
   "version": "0.2.1",
   "description": "A server to mock API responses with local JSON-files and configurable overrides.",
+  "repository": "https://github.com/jpunt/mocked-api",
   "main": "lib/index.js",
   "bin": "./bin/mocked-api",
   "scripts": {
