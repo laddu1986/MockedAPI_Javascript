@@ -6,7 +6,11 @@ import JsonPointer from 'json-pointer';
 module.exports = class Server {
   constructor(config) {
     this.reset();
-    this.config = config;
+
+    this.name = config.name;
+    this.port = config.port;
+    this.dir = config.dir;
+
     this.express = express();
     this.express.get('*', (req, res) => {
       this.getHandler(req, res);
@@ -25,7 +29,7 @@ module.exports = class Server {
     if (this.server) {
       return callback();
     }
-    this.server = this.express.listen(this.config.port, callback);
+    this.server = this.express.listen(this.port, callback);
   }
 
   stop() {
@@ -36,7 +40,7 @@ module.exports = class Server {
   }
 
   getHandler(req, res) {
-    const filePath = Path.resolve(this.config.dir + req.path);
+    const filePath = Path.resolve(this.dir + req.path);
 
     this._fileExists(filePath)
       .then(() => {

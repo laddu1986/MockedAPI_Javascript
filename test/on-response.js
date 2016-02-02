@@ -5,26 +5,26 @@ const config = { port:3000, dir:`${__dirname}/mocks` };
 const baseUrl = 'http://localhost:3000';
 
 delete require.cache[require.resolve('../src')];
-const mockedApi = require('../src').setup(config);
+const MockedApi = require('../src').setup(config);
 
 describe('custom values', () => {
   before((done) => {
-    mockedApi.start(done);
+    MockedApi.start(done);
   });
 
   after(() => {
-    mockedApi.stop();
+    MockedApi.stop();
   });
 
   beforeEach(() => {
-    mockedApi.reset();
+    MockedApi.reset();
   });
 
   describe('when request succeeds', () => {
     it('triggers onResponse', (done) => {
       let receivedStatus, receivedBody;
 
-      mockedApi
+      MockedApi
         .onResponse((status, body) => {
           receivedStatus = status;
           receivedBody = body;
@@ -42,7 +42,7 @@ describe('custom values', () => {
     it('triggers onResponse', (done) => {
       let receivedStatus, receivedBody;
 
-      mockedApi
+      MockedApi
         .onResponse((status, body) => {
           receivedStatus = status;
           receivedBody = body;

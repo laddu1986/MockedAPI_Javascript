@@ -10,7 +10,7 @@ $ npm install mocked-api --save-dev
 ## Usage
 
 ### Configuration
-To get things running, to use in your test-suite for example, initialize it like this:
+To get things running (to use it in your test-suite for example), initialize it like this:
 
 ```js
 const api = require('mocked-api').setup({
@@ -32,7 +32,7 @@ Place JSON-files in the configured directory to accomodate the responses. You ca
 Once initialized, you can mutate responses with the following methods:
 
 ```js
-const api = require('mocked-api').get();
+import { api } from 'mocked-api';
 
 api
   .respondTo(path) // Defines the path you're about to change
@@ -49,10 +49,7 @@ You can use these methods to make small changes in a response and test your UI f
 The following example is based on mocha/chai/jsdom, but you can use it similarly in other environments:
 
 ```js
-// MockedApi is already initialized and
-// configured somewhere else, so we can
-// use it right away.
-const api = require('mocked-api').get();
+import { api } from 'mocked-api';
 
 describe('article', () => {
   beforeEach(() => {
@@ -94,14 +91,14 @@ You can run multiple instances of MockedApi simultaneously. For that, pass it a 
 
 ```js
 const MockedApi = require('mocked-api');
-const userApi = MockedApi.setup('user', { port: 3000, dir: './mocks/user' });
-const blogApi = MockedApi.setup('blog', { port: 3001, dir: './mocks/blog' });
+const userApi = MockedApi.setup({ name: 'user', port: 3000, dir: './mocks/user' });
+const blogApi = MockedApi.setup({ name: 'blog', port: 3001, dir: './mocks/blog' });
 ```
 
 Anytime you need one of those API's to override, make sure you use that same name:
 
 ```js
-const userApi = require('mocked-api').get('user');
+const userApi = require('mocked-api').apiByName['user'];
 
 describe('user', () => {
   beforeEach(() => userApi.reset());

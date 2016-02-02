@@ -1,34 +1,21 @@
 'use strict';
 
 const Server = require('./server');
-const instances = [];
-
-function getInstance(name) {
-  const cached = instances.filter(i => i.name == name);
-  if (cached.length > 0) {
-    return cached[0];
-  }
-}
 
 module.exports = {
-  setup: function(a, b) {
-    const name = typeof a === 'string' ? a : null;
-    const config = name && b ? b : a;
+  api: null,
+  apiByName: {},
 
-    const cached = getInstance(name);
-    if (cached) {
-      return cached.server;
+  setup: function(config) {
+    const server = new Server(config);
+
+    if (config.name) {
+      this.apiByName[config.name] = server;
+    } else {
+      this.apiByName['_no_name'] = server;
+      this.api = server;
     }
 
-    const newInstance = { name:name, server:new Server(config) };
-    instances.push(newInstance);
-    return newInstance.server;
-  },
-
-  get: function(name) {
-    const cached = getInstance(name);
-    if (cached) {
-      return cached.server;
-    }
+    return server;
   },
 };
