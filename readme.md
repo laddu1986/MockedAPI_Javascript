@@ -13,7 +13,9 @@ $ npm install mocked-api --save-dev
 To get things running (to use it in your test-suite for example), initialize it like this:
 
 ```js
-const api = require('mocked-api').setup({
+import MockedApi from 'mocked-api';
+
+const api = MockedApi.setup({
   port: 3000, // port where you want the API to run on
   dir: './mocks' // directory where your JSON-files live
 });
@@ -90,7 +92,7 @@ describe('article', () => {
 You can run multiple instances of MockedApi simultaneously. For that, pass it a name when you setup each:
 
 ```js
-const MockedApi = require('mocked-api');
+import MockedApi from 'mocked-api';
 const userApi = MockedApi.setup({ name: 'user', port: 3000, dir: './mocks/user' });
 const blogApi = MockedApi.setup({ name: 'blog', port: 3001, dir: './mocks/blog' });
 ```
@@ -98,7 +100,8 @@ const blogApi = MockedApi.setup({ name: 'blog', port: 3001, dir: './mocks/blog' 
 Anytime you need one of those API's to override, make sure you use that same name:
 
 ```js
-const userApi = require('mocked-api').apiByName['user'];
+import MockedApi from 'mocked-api';
+const userApi = MockedApi.getByName('user');
 
 describe('user', () => {
   beforeEach(() => userApi.reset());

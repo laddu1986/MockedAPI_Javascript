@@ -60,7 +60,7 @@ describe('setup named', () => {
   });
 
   it('returns cached server A', (done) => {
-    serverA = MockedApi.apiByName.a;
+    serverA = MockedApi.getByName('a');
 
     expect(serverA.name).to.equal(configA.name);
     expect(serverA.port).to.equal(configA.port);
@@ -77,7 +77,7 @@ describe('setup named', () => {
   });
 
   it('returns cached server B', (done) => {
-    serverB = MockedApi.apiByName.b;
+    serverB = MockedApi.getByName('b');
 
     expect(serverB.name).to.equal(configB.name);
     expect(serverB.port).to.equal(configB.port);

@@ -4,18 +4,22 @@ const Server = require('./server');
 
 module.exports = {
   api: null,
-  apiByName: {},
+  _instances: {},
 
   setup: function(config) {
     const server = new Server(config);
 
     if (config.name) {
-      this.apiByName[config.name] = server;
+      this._instances[config.name] = server;
     } else {
-      this.apiByName['_no_name'] = server;
+      this._instances['_no_name'] = server;
       this.api = server;
     }
 
     return server;
+  },
+
+  getByName: function(name) {
+    return this._instances[name];
   },
 };
