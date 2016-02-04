@@ -62,26 +62,32 @@ describe('article', () => {
 
   describe('title', () => {
     describe('when it has a title', () => {
-      it('renders the title', () => {
+      it('renders the title', (done) => {
         api
           .respondTo('/content/article/42.json')
           .andReplace('/title', 'test title');
 
         browser
           .go(`${baseUrl}/article/42`)
-          .then(window => expect(window.$('#title').text()).to.equal('test title'));
+          .then(window => {
+            expect(window.$('#title').text()).to.equal('test title');
+            done();
+          });
       });
     });
 
     describe('when it has no title', () => {
-      it('renders no title', () => {
+      it('renders no title', (done) => {
         api
           .respondTo('/content/article/42.json')
           .andReplace('/title', null);
 
         browser
           .go(`${baseUrl}/article/42`)
-          .then(window => expect(window.$('#title').length).to.equal(0));
+          .then(window => {
+            expect(window.$('#title').length).to.equal(0);
+            done();
+          });
       });
     });
   });
@@ -107,7 +113,7 @@ describe('user', () => {
   beforeEach(() => userApi.reset());
 
   describe('when logged in', () => {
-    it('shows avatar', () => {
+    it('shows avatar', (done) => {
       const kitty = 'http://placekitten.com/200/300';
 
       userApi
@@ -116,19 +122,25 @@ describe('user', () => {
 
       browser
         .go('/')
-        .then(window => expect(window.$('#avatar').attr('src')).to.equal(kitty));
+        .then(window => {
+          expect(window.$('#avatar').attr('src')).to.equal(kitty);
+          done();
+        });
     });
   });
 
   describe('when not logged in', () => {
-    it('does not show avatar', () => {
+    it('does not show avatar', (done) => {
       userApi
         .respondTo('/me')
         .withStatus(401)
 
       browser
         .go('/')
-        .then(window => expect(window.$('#avatar').length).to.equal(0));
+        .then(window => {
+          expect(window.$('#avatar').length).to.equal(0);
+          done();
+        });
     });
   });
 });
