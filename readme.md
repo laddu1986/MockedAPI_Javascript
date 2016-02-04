@@ -62,31 +62,29 @@ describe('article', () => {
 
   describe('title', () => {
     describe('when it has a title', () => {
-      it('renders the title', (done) => {
+      it('renders the title', () => {
         api
           .respondTo('/content/article/42.json')
           .andReplace('/title', 'test title');
 
-        browser
+        return browser
           .go(`${baseUrl}/article/42`)
           .then(window => {
             expect(window.$('#title').text()).to.equal('test title');
-            done();
           });
       });
     });
 
     describe('when it has no title', () => {
-      it('renders no title', (done) => {
+      it('renders no title', () => {
         api
           .respondTo('/content/article/42.json')
           .andReplace('/title', null);
 
-        browser
+        return browser
           .go(`${baseUrl}/article/42`)
           .then(window => {
             expect(window.$('#title').length).to.equal(0);
-            done();
           });
       });
     });
@@ -113,33 +111,31 @@ describe('user', () => {
   beforeEach(() => userApi.reset());
 
   describe('when logged in', () => {
-    it('shows avatar', (done) => {
+    it('shows avatar', () => {
       const kitty = 'http://placekitten.com/200/300';
 
       userApi
         .respondTo('/me')
         .andReplace('/image/src', kitty);
 
-      browser
+      return browser
         .go('/')
         .then(window => {
           expect(window.$('#avatar').attr('src')).to.equal(kitty);
-          done();
         });
     });
   });
 
   describe('when not logged in', () => {
-    it('does not show avatar', (done) => {
+    it('does not show avatar', () => {
       userApi
         .respondTo('/me')
         .withStatus(401)
 
-      browser
+      return browser
         .go('/')
         .then(window => {
           expect(window.$('#avatar').length).to.equal(0);
-          done();
         });
     });
   });
