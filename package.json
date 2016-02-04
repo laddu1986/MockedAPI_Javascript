@@ -1,7 +1,7 @@
 {
   "name": "mocked-api",
   "author": "Jasper Haggenburg",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A server to mock API responses with local JSON-files and configurable overrides.",
   "repository": "https://github.com/jpunt/mocked-api",
   "main": "lib/index.js",
