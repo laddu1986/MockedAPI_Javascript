@@ -46,6 +46,11 @@ module.exports = class Server {
   getHandler(req, res) {
     const filePath = Path.resolve(this.dir + req.path);
 
+    // Allow all the things, security is overrated
+    res.set('Access-Control-Allow-Origin', req.get('origin'));
+    res.set('Access-Control-Allow-Credentials', true);
+
+    // Get file and serve it
     this._fileExists(filePath)
       .then(() => {
         return this._loadJson(filePath);
