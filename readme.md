@@ -20,7 +20,7 @@ const api = MockedApi.setup({
   dir: './mocks' // directory where your JSON-files live
 });
 
-api.start(() => {
+api.start().then() => {
   console.log('API ready')
 });
 ```
