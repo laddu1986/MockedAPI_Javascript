@@ -25,11 +25,15 @@ module.exports = class Server {
     return this;
   }
 
-  start(callback) {
-    if (this.server) {
-      return callback();
-    }
-    this.server = this.express.listen(this.port, callback);
+  start() {
+    return new Promise((resolve, reject) => {
+      if (this.server) {
+        return resolve();
+      }
+      this.server = this.express.listen(this.port, () => {
+        resolve();
+      });
+    });
   }
 
   stop() {

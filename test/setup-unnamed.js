@@ -23,14 +23,20 @@ describe('setup unnamed', () => {
     expect(server.dir).to.equal(config.dir);
     expect(server.server).not.to.exist;
 
-    server.start(() => {
-      expect(server.server).to.exist;
-      fetchUrl(`${baseUrl}/42.json`, (err, meta, body) => {
-        expect(meta.status).to.equal(200);
-        expect(JSON.parse(body.toString()).title).to.equal('Mock 42');
-        done();
-      });
-    });
+    server
+      .start()
+      .then(() => {
+        expect(server.server).to.exist;
+
+        return new Promise((resolve, reject) => {
+          fetchUrl(`${baseUrl}/42.json`, (err, meta, body) => {
+            expect(meta.status).to.equal(200);
+            expect(JSON.parse(body.toString()).title).to.equal('Mock 42');
+            resolve();
+          });
+        });
+      })
+      .then(done, done);
   });
 
   it('returns cached server', (done) => {
@@ -40,12 +46,17 @@ describe('setup unnamed', () => {
     expect(server.dir).to.equal(config.dir);
     expect(server.server).to.exist;
 
-    server.start(() => {
-      fetchUrl(`${baseUrl}/42.json`, (err, meta, body) => {
-        expect(meta.status).to.equal(200);
-        expect(JSON.parse(body.toString()).title).to.equal('Mock 42');
-        done();
-      });
-    });
+    server
+      .start()
+      .then(() => {
+        return new Promise((resolve, reject) => {
+          fetchUrl(`${baseUrl}/42.json`, (err, meta, body) => {
+            expect(meta.status).to.equal(200);
+            expect(JSON.parse(body.toString()).title).to.equal('Mock 42');
+            resolve();
+          });
+        });
+      })
+      .then(done, done);
   });
 });

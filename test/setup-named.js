@@ -1,4 +1,4 @@
-const fetchUrl = require('fetch').fetchUrl;
+const fetchUrl = require('fetch').fetchUrl; // TODO: use node-fetch because of promises
 const expect = require('chai').expect;
 
 delete require.cache[require.resolve('../src')];
@@ -31,14 +31,19 @@ describe('setup named', () => {
     expect(serverA.dir).to.equal(configA.dir);
     expect(serverA.server).not.to.exist;
 
-    serverA.start(() => {
-      expect(serverA.server).to.exist;
-      fetchUrl(`${baseUrlA}/42.json`, (err, meta, body) => {
-        expect(meta.status).to.equal(200);
-        expect(JSON.parse(body.toString()).title).to.equal('Mock 42');
-        done();
-      });
-    });
+    serverA
+      .start()
+      .then(() => {
+        expect(serverA.server).to.exist;
+        return new Promise((resolve, reject) => {
+          fetchUrl(`${baseUrlA}/42.json`, (err, meta, body) => {
+            expect(meta.status).to.equal(200);
+            expect(JSON.parse(body.toString()).title).to.equal('Mock 42');
+            resolve();
+          });
+        });
+      })
+      .then(done, done);
   });
 
   it('starts server B', (done) => {
@@ -49,14 +54,19 @@ describe('setup named', () => {
     expect(serverB.dir).to.equal(configB.dir);
     expect(serverB.server).not.to.exist;
 
-    serverB.start(() => {
-      expect(serverB.server).to.exist;
-      fetchUrl(`${baseUrlB}/42.json`, (err, meta, body) => {
-        expect(meta.status).to.equal(200);
-        expect(JSON.parse(body.toString()).title).to.equal('Mock 43');
-        done();
-      });
-    });
+    serverB
+      .start()
+      .then(() => {
+        expect(serverB.server).to.exist;
+        return new Promise((resolve, reject) => {
+          fetchUrl(`${baseUrlB}/42.json`, (err, meta, body) => {
+            expect(meta.status).to.equal(200);
+            expect(JSON.parse(body.toString()).title).to.equal('Mock 43');
+            resolve();
+          });
+        });
+      })
+      .then(done, done);
   });
 
   it('returns cached server A', (done) => {
@@ -67,13 +77,18 @@ describe('setup named', () => {
     expect(serverA.dir).to.equal(configA.dir);
     expect(serverA.server).to.exist;
 
-    serverA.start(() => {
-      fetchUrl(`${baseUrlA}/42.json`, (err, meta, body) => {
-        expect(meta.status).to.equal(200);
-        expect(JSON.parse(body.toString()).title).to.equal('Mock 42');
-        done();
-      });
-    });
+    serverA
+      .start()
+      .then(() => {
+        return new Promise((resolve, reject) => {
+          fetchUrl(`${baseUrlA}/42.json`, (err, meta, body) => {
+            expect(meta.status).to.equal(200);
+            expect(JSON.parse(body.toString()).title).to.equal('Mock 42');
+            resolve();
+          });
+        });
+      })
+      .then(done, done);
   });
 
   it('returns cached server B', (done) => {
@@ -84,12 +99,17 @@ describe('setup named', () => {
     expect(serverB.dir).to.equal(configB.dir);
     expect(serverB.server).to.exist;
 
-    serverB.start(() => {
-      fetchUrl(`${baseUrlB}/42.json`, (err, meta, body) => {
-        expect(meta.status).to.equal(200);
-        expect(JSON.parse(body.toString()).title).to.equal('Mock 43');
-        done();
-      });
-    });
+    serverB
+      .start()
+      .then(() => {
+        return new Promise((resolve, reject) => {
+          fetchUrl(`${baseUrlB}/42.json`, (err, meta, body) => {
+            expect(meta.status).to.equal(200);
+            expect(JSON.parse(body.toString()).title).to.equal('Mock 43');
+            resolve();
+          });
+        });
+      })
+      .then(done, done);
   });
 });

@@ -9,7 +9,7 @@ const mockedApi = require('../src').setup(config);
 
 describe('file loading', () => {
   before((done) => {
-    mockedApi.start(done);
+    mockedApi.start().then(done, done);
   });
 
   after(() => {
