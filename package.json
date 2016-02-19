@@ -10,7 +10,7 @@
     "compile": "babel src --out-dir lib",
     "prepublish": "rm -rf ./lib && npm run compile",
     "test": "mocha --compilers js:babel-register",
-    "lint": "eslint ."
+    "lint": "eslint . --max-warnings 0"
   },
   "license": "ISC",
   "dependencies": {
