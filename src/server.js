@@ -56,7 +56,10 @@ module.exports = class Server {
         return this._loadJson(filePath);
       })
       .then(json => {
-        return this._mutateJson(req, json);
+        return this._validateJson(json, req, filePath);
+      })
+      .then(json => {
+        return this._mutateJson(json, req);
       })
       .then(mutatedJson => {
         const status = this._getMutatedStatus(req);
@@ -64,9 +67,9 @@ module.exports = class Server {
         this.responseHandler(status, body);
         res.status(status).send(body);
       })
-      .catch(err => {
+      .catch((err = []) => {
         this.responseHandler(err[0], err[1]);
-        res.status(err[0]).send(err[1]);
+        res.status(err[0] || 500).send(err[1] || 'unknown error');
       });
   }
 
@@ -114,14 +117,33 @@ module.exports = class Server {
     });
   }
 
-  _mutateJson(req, json) {
+  _validateJson(json, req, filePath) {
+    if (!json.trim().startsWith('{')) {
+      return Promise.resolve(json);
+    }
+
+    try {
+      JSON.parse(json);
+      return Promise.resolve(json);
+    } catch (err) {
+      console.log('Could not parse JSON:');
+      console.trace(err);
+      return Promise.reject([500, {
+        message: `File looks like JSON, but could not be parsed (${err.message})`,
+        url: req.path,
+        file: filePath,
+      }]);
+    }
+  }
+
+  _mutateJson(json, req) {
     const mutated = JSON.parse(json);
     this.jsonMutations.forEach((mutation) => {
       if (req.path == mutation.path) {
         JsonPointer.set(mutated, mutation.pointer, mutation.value);
       }
     });
-    return mutated;
+    return Promise.resolve(mutated);
   }
 
   _getMutatedStatus(req) {
