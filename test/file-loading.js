@@ -20,27 +20,38 @@ describe('file loading', () => {
     mockedApi.reset();
   });
 
-  it('returns json from file directly in mock-dir', (done) => {
-    fetchUrl(`${baseUrl}/42.json`, (err, meta, body) => {
-      expect(meta.status).to.equal(200);
+  describe('when file exists', () => {
+    it('returns json from file directly in mock-dir', (done) => {
+      fetchUrl(`${baseUrl}/42.json`, (err, meta, body) => {
+        expect(meta.status).to.equal(200);
 
-      const json = JSON.parse(body.toString());
-      expect(json.title).to.equal('Mock 42');
-      expect(json.list).to.eql([1, 2, 3]);
+        const json = JSON.parse(body.toString());
+        expect(json.title).to.equal('Mock 42');
+        expect(json.list).to.eql([1, 2, 3]);
 
-      done();
+        done();
+      });
+    });
+
+    it('returns json from file nested in mock-dir', (done) => {
+      fetchUrl(`${baseUrl}/deeply/nested/42.json`, (err, meta, body) => {
+        expect(meta.status).to.equal(200);
+
+        const json = JSON.parse(body.toString());
+        expect(json.title).to.equal('Nested mock');
+        expect(json.list).to.eql([10, 20, 30]);
+
+        done();
+      });
     });
   });
 
-  it('returns json from file nested in mock-dir', (done) => {
-    fetchUrl(`${baseUrl}/deeply/nested/42.json`, (err, meta, body) => {
-      expect(meta.status).to.equal(200);
-
-      const json = JSON.parse(body.toString());
-      expect(json.title).to.equal('Nested mock');
-      expect(json.list).to.eql([10, 20, 30]);
-
-      done();
+  describe('when file does not exist', () => {
+    it('returns 404', (done) => {
+      fetchUrl(`${baseUrl}/does-not-exist.json`, (err, meta, body) => {
+        expect(meta.status).to.equal(404);
+        done();
+      });
     });
   });
 });

@@ -111,7 +111,7 @@ module.exports = class Server {
     return new Promise((resolve, reject) => {
       FS.readFile(filePath, 'utf8', function(err, data) {
         err ?
-          reject([500, err]) :
+          reject([404, err]) :
           resolve(data);
       });
     });
