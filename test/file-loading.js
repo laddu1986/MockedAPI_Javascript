@@ -44,6 +44,32 @@ describe('file loading', () => {
         done();
       });
     });
+
+    describe('when extension is not given', () => {
+      it('returns json from file', (done) => {
+        fetchUrl(`${baseUrl}/extensions/42`, (err, meta, body) => {
+          expect(meta.status).to.equal(200);
+
+          const json = JSON.parse(body.toString());
+          expect(json.title).to.equal('Mock 42');
+          expect(json.list).to.eql([1, 2, 3]);
+
+          done();
+        });
+      });
+
+      it('returns json from file within a directory of the same name', (done) => {
+        fetchUrl(`${baseUrl}/extensions/42/43`, (err, meta, body) => {
+          expect(meta.status).to.equal(200);
+
+          const json = JSON.parse(body.toString());
+          expect(json.title).to.equal('Mock 43');
+          expect(json.list).to.eql([4, 5, 6]);
+
+          done();
+        });
+      });
+    });
   });
 
   describe('when file does not exist', () => {

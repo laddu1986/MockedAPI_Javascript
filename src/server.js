@@ -51,9 +51,9 @@ module.exports = class Server {
     res.set('Access-Control-Allow-Credentials', true);
 
     // Get file and serve it
-    this._fileExists(filePath)
-      .then(() => {
-        return this._loadJson(filePath);
+    this._resolveFilePath(filePath)
+      .then(resolvedFilePath => {
+        return this._loadJson(resolvedFilePath);
       })
       .then(json => {
         return this._validateJson(json, req, filePath);
@@ -97,12 +97,21 @@ module.exports = class Server {
    * Private helpers
    */
 
-  _fileExists(filePath) {
+  _resolveFilePath(filePath) {
     return new Promise((resolve, reject) => {
       FS.stat(filePath, (err, stats) => {
-        err ?
-          reject([404, err]) :
-          resolve();
+        err || !stats.isFile() ?
+          reject() :
+          resolve(filePath);
+      });
+    }).catch(() => {
+      // Fallback to an appended '.json'
+      return new Promise((resolve, reject) => {
+        FS.stat(filePath + '.json', (err, stats) => {
+          err ?
+            reject([404, err]) :
+            resolve(filePath + '.json');
+        });
       });
     });
   }
@@ -111,7 +120,7 @@ module.exports = class Server {
     return new Promise((resolve, reject) => {
       FS.readFile(filePath, 'utf8', function(err, data) {
         err ?
-          reject([404, err]) :
+          reject([500, err]) :
           resolve(data);
       });
     });
