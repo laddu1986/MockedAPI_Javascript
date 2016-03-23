@@ -28,7 +28,7 @@ api.start().then() => {
 You can do this once (like in a script that's running your test-suite). The server will keep running until that process is killed, so you don't have to setup the server for every single test.
 
 ### JSON-files
-Place JSON-files in the configured directory to accomodate the responses. You can use nested directories to simulate a path-hierarchy. For example, the file at `./mocks/content/article/42.json` will be served at `http://localhost:3000/content/article/42.json` for the configuration above.
+Place JSON-files in the configured directory to accomodate the responses. You can use nested directories to simulate a path-hierarchy. For example, the file at `./mocks/content/article/42.json` will be served at `http://localhost:3000/content/article/42.json` for the configuration above. If your API prohibits you from adding an extension, either create a file with or without an extension and it will be resolved.
 
 ### Custom responses
 Once initialized, you can mutate responses with the following methods:
