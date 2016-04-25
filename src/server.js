@@ -2,6 +2,7 @@ import express from 'express';
 import Path from 'path';
 import FS from 'fs';
 import JsonPointer from 'json-pointer';
+import cors from 'cors';
 
 module.exports = class Server {
   constructor(config) {
@@ -10,8 +11,10 @@ module.exports = class Server {
     this.name = config.name;
     this.port = config.port;
     this.dir = config.dir;
+    this.cors = config.cors || {};
 
     this.express = express();
+    this.express.use(this.setupCors());
     this.express.get('*', (req, res) => {
       this.getHandler(req, res);
     });
@@ -43,12 +46,14 @@ module.exports = class Server {
     }
   }
 
+  setupCors() {
+    const corsConfig = Object.assign({ origin: '*', credentials: true }, this.cors);
+    console.log('corsConfig', corsConfig);
+    return cors(corsConfig);
+  }
+
   getHandler(req, res) {
     const filePath = Path.resolve(this.dir + req.path);
-
-    // Allow all the things, security is overrated
-    res.set('Access-Control-Allow-Origin', req.get('origin'));
-    res.set('Access-Control-Allow-Credentials', true);
 
     // Get file and serve it
     this._resolveFilePath(filePath)
