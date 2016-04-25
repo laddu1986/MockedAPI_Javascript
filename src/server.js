@@ -65,7 +65,7 @@ module.exports = class Server {
         const status = this._getMutatedStatus(req);
         const body = mutatedJson;
         this.responseHandler(status, body);
-        res.status(status).send(body);
+        res.status(status).json(body);
       })
       .catch((err = []) => {
         this.responseHandler(err[0], err[1]);
