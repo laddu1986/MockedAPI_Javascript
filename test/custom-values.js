@@ -1,4 +1,4 @@
-const fetchUrl = require('fetch').fetchUrl;
+const fetch = require('node-fetch');
 const expect = require('chai').expect;
 
 const config = { port:3000, dir:`${__dirname}/mocks` };
@@ -25,11 +25,12 @@ describe('custom values', () => {
       .respondTo('/42.json')
       .andReplace('/title', 'changed title');
 
-    fetchUrl(`${baseUrl}/42.json`, (err, meta, body) => {
-      expect(meta.status).to.equal(200);
-      expect(JSON.parse(body.toString()).title).to.equal('changed title');
-      done();
-    });
+    fetch(`${baseUrl}/42.json`).then(res => {
+      expect(res.status).to.equal(200);
+      return res.json();
+    }).then(json => {
+      expect(json.title).to.equal('changed title');
+    }).then(done, done);
   });
 
   it('returns json with custom list', (done) => {
@@ -37,11 +38,12 @@ describe('custom values', () => {
       .respondTo('/42.json')
       .andReplace('/list', [42]);
 
-    fetchUrl(`${baseUrl}/42.json`, (err, meta, body) => {
-      expect(meta.status).to.equal(200);
-      expect(JSON.parse(body.toString()).list).to.eql([42]);
-      done();
-    });
+    fetch(`${baseUrl}/42.json`).then(res => {
+      expect(res.status).to.equal(200);
+      return res.json();
+    }).then(json => {
+      expect(json.list).to.eql([42]);
+    }).then(done, done);
   });
 
   it('returns json with custom list item', (done) => {
@@ -49,10 +51,11 @@ describe('custom values', () => {
       .respondTo('/42.json')
       .andReplace('/list/2', 42);
 
-    fetchUrl(`${baseUrl}/42.json`, (err, meta, body) => {
-      expect(meta.status).to.equal(200);
-      expect(JSON.parse(body.toString()).list).to.eql([1, 2, 42]);
-      done();
-    });
+    fetch(`${baseUrl}/42.json`).then(res => {
+      expect(res.status).to.equal(200);
+      return res.json();
+    }).then(json => {
+      expect(json.list).to.eql([1, 2, 42]);
+    }).then(done, done);
   });
 });

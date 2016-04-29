@@ -1,4 +1,4 @@
-const fetchUrl = require('fetch').fetchUrl;
+const fetch = require('node-fetch');
 const expect = require('chai').expect;
 const MockedApi = require('../src');
 
@@ -26,11 +26,10 @@ describe('cors config', () => {
     });
 
     it('has an Access-Control-Allow-Origin header', (done) => {
-      fetchUrl(`${baseUrl}/42.json`, (err, meta, body) => {
-        expect(meta.responseHeaders['access-control-allow-origin']).to.equal('*');
-        expect(meta.responseHeaders['access-control-allow-credentials']).to.equal('true');
-        done();
-      });
+      fetch(`${baseUrl}/42.json`).then(res => {
+        expect(res.headers.get('access-control-allow-origin')).to.equal('*');
+        expect(res.headers.get('access-control-allow-credentials')).to.equal('true');
+      }).then(done, done);
     });
   });
 
@@ -46,10 +45,9 @@ describe('cors config', () => {
     });
 
     it('has a correct Access-Control-Allow-Origin header', (done) => {
-      fetchUrl(`${baseUrl}/42.json`, (err, meta, body) => {
-        expect(meta.responseHeaders['access-control-allow-origin']).to.equal('foo');
-        done();
-      });
+      fetch(`${baseUrl}/42.json`).then(res => {
+        expect(res.headers.get('access-control-allow-origin')).to.equal('foo');
+      }).then(done, done);
     });
   });
 
@@ -65,10 +63,9 @@ describe('cors config', () => {
     });
 
     it('has no Access-Control-Allow-Origin header', (done) => {
-      fetchUrl(`${baseUrl}/42.json`, (err, meta, body) => {
-        expect(meta.responseHeaders['access-control-allow-origin']).not.to.exist;
-        done();
-      });
+      fetch(`${baseUrl}/42.json`).then(res => {
+        expect(res.headers.get('access-control-allow-origin')).not.to.exist;
+      }).then(done, done);
     });
   });
 
@@ -84,18 +81,15 @@ describe('cors config', () => {
     });
 
     it('OPTIONS request has a Access-Control-Allow-Headers header', (done) => {
-      fetchUrl(`${baseUrl}/42.json`, { method: 'OPTIONS' }, (err, meta, body) => {
-        expect(meta.responseHeaders['access-control-allow-headers']).to.equal('Content-Type');
-        done();
-      });
+      fetch(`${baseUrl}/42.json`, { method: 'OPTIONS' }).then(res => {
+        expect(res.headers.get('access-control-allow-headers')).to.equal('Content-Type');
+      }).then(done, done);
     });
 
     it('GET request should not have a Access-Control-Allow-Headers header', (done) => {
-      fetchUrl(`${baseUrl}/42.json`, { method: 'GET' }, (err, meta, body) => {
-        expect(meta.responseHeaders['access-control-allow-headers']).not.to.exist;
-        done();
-      });
+      fetch(`${baseUrl}/42.json`, { method: 'GET' }).then(res => {
+        expect(res.headers.get('access-control-allow-headers')).not.to.exist;
+      }).then(done, done);
     });
   });
-
 });

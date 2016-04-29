@@ -1,4 +1,4 @@
-const fetchUrl = require('fetch').fetchUrl;
+const fetch = require('node-fetch');
 const expect = require('chai').expect;
 
 delete require.cache[require.resolve('../src')];
@@ -27,13 +27,11 @@ describe('setup unnamed', () => {
       .start()
       .then(() => {
         expect(server.server).to.exist;
-
-        return new Promise((resolve, reject) => {
-          fetchUrl(`${baseUrl}/42.json`, (err, meta, body) => {
-            expect(meta.status).to.equal(200);
-            expect(JSON.parse(body.toString()).title).to.equal('Mock 42');
-            resolve();
-          });
+        return fetch(`${baseUrl}/42.json`).then(res => {
+          expect(res.status).to.equal(200);
+          return res.json();
+        }).then(json => {
+          expect(json.title).to.equal('Mock 42');
         });
       })
       .then(done, done);
@@ -49,12 +47,11 @@ describe('setup unnamed', () => {
     server
       .start()
       .then(() => {
-        return new Promise((resolve, reject) => {
-          fetchUrl(`${baseUrl}/42.json`, (err, meta, body) => {
-            expect(meta.status).to.equal(200);
-            expect(JSON.parse(body.toString()).title).to.equal('Mock 42');
-            resolve();
-          });
+        return fetch(`${baseUrl}/42.json`).then(res => {
+          expect(res.status).to.equal(200);
+          return res.json();
+        }).then(json => {
+          expect(json.title).to.equal('Mock 42');
         });
       })
       .then(done, done);
