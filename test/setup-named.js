@@ -1,4 +1,4 @@
-const fetchUrl = require('fetch').fetchUrl; // TODO: use node-fetch because of promises
+const fetch = require('node-fetch');
 const expect = require('chai').expect;
 
 delete require.cache[require.resolve('../src')];
@@ -35,12 +35,11 @@ describe('setup named', () => {
       .start()
       .then(() => {
         expect(serverA.server).to.exist;
-        return new Promise((resolve, reject) => {
-          fetchUrl(`${baseUrlA}/42.json`, (err, meta, body) => {
-            expect(meta.status).to.equal(200);
-            expect(JSON.parse(body.toString()).title).to.equal('Mock 42');
-            resolve();
-          });
+        return fetch(`${baseUrlA}/42.json`).then(res => {
+          expect(res.status).to.equal(200);
+          return res.json();
+        }).then(json => {
+          expect(json.title).to.equal('Mock 42');
         });
       })
       .then(done, done);
@@ -58,12 +57,11 @@ describe('setup named', () => {
       .start()
       .then(() => {
         expect(serverB.server).to.exist;
-        return new Promise((resolve, reject) => {
-          fetchUrl(`${baseUrlB}/42.json`, (err, meta, body) => {
-            expect(meta.status).to.equal(200);
-            expect(JSON.parse(body.toString()).title).to.equal('Mock 43');
-            resolve();
-          });
+        return fetch(`${baseUrlB}/42.json`).then(res => {
+          expect(res.status).to.equal(200);
+          return res.json();
+        }).then(json => {
+          expect(json.title).to.equal('Mock 43');
         });
       })
       .then(done, done);
@@ -80,12 +78,11 @@ describe('setup named', () => {
     serverA
       .start()
       .then(() => {
-        return new Promise((resolve, reject) => {
-          fetchUrl(`${baseUrlA}/42.json`, (err, meta, body) => {
-            expect(meta.status).to.equal(200);
-            expect(JSON.parse(body.toString()).title).to.equal('Mock 42');
-            resolve();
-          });
+        return fetch(`${baseUrlA}/42.json`).then(res => {
+          expect(res.status).to.equal(200);
+          return res.json();
+        }).then(json => {
+          expect(json.title).to.equal('Mock 42');
         });
       })
       .then(done, done);
@@ -102,12 +99,11 @@ describe('setup named', () => {
     serverB
       .start()
       .then(() => {
-        return new Promise((resolve, reject) => {
-          fetchUrl(`${baseUrlB}/42.json`, (err, meta, body) => {
-            expect(meta.status).to.equal(200);
-            expect(JSON.parse(body.toString()).title).to.equal('Mock 43');
-            resolve();
-          });
+        return fetch(`${baseUrlB}/42.json`).then(res => {
+          expect(res.status).to.equal(200);
+          return res.json();
+        }).then(json => {
+          expect(json.title).to.equal('Mock 43');
         });
       })
       .then(done, done);

@@ -1,4 +1,4 @@
-const fetchUrl = require('fetch').fetchUrl;
+const fetch = require('node-fetch');
 const expect = require('chai').expect;
 
 const config = { port:3000, dir:`${__dirname}/mocks` };
@@ -25,10 +25,9 @@ describe('custom status', () => {
       .respondTo('/42.json')
       .withStatus(666);
 
-    fetchUrl(`${baseUrl}/42.json`, (err, meta, body) => {
-      expect(meta.status).to.equal(666);
-      done();
-    });
+    fetch(`${baseUrl}/42.json`).then(res => {
+      expect(res.status).to.equal(666);
+    }).then(done, done);
   });
 
   it('returns json with custom status and title', (done) => {
@@ -37,10 +36,11 @@ describe('custom status', () => {
       .andReplace('/title', 'changed title')
       .withStatus(666);
 
-    fetchUrl(`${baseUrl}/42.json`, (err, meta, body) => {
-      expect(meta.status).to.equal(666);
-      expect(JSON.parse(body.toString()).title).to.equal('changed title');
-      done();
-    });
+    fetch(`${baseUrl}/42.json`).then(res => {
+      expect(res.status).to.equal(666);
+      return res.json();
+    }).then(json => {
+      expect(json.title).to.equal('changed title');
+    }).then(done, done);
   });
 });
