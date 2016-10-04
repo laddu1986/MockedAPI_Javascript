@@ -25,9 +25,9 @@ describe('cors config', () => {
       server.stop();
     });
 
-    it('has an Access-Control-Allow-Origin header', (done) => {
+    it('has default headers', (done) => {
       fetch(`${baseUrl}/42.json`).then(res => {
-        expect(res.headers.get('access-control-allow-origin')).to.equal('*');
+        expect(res.headers.get('vary')).to.equal('Origin');
         expect(res.headers.get('access-control-allow-credentials')).to.equal('true');
       }).then(done, done);
     });

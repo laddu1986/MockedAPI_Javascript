@@ -58,8 +58,7 @@ module.exports = class Server {
   }
 
   setupCors() {
-    const corsConfig = { origin: '*', credentials: true, ...this.cors };
-    return cors(corsConfig);
+    return cors({ origin: true, credentials: true, ...this.cors });
   }
 
   getHandler(req, res) {
