@@ -15,10 +15,6 @@ module.exports = class Server {
 
     this.express = express();
     this.express.use(this.setupCors());
-    this.express.get('*', (req, res) => {
-      this.getHandler(req, res);
-    });
-    
     // JSDOM doesn't implement CORS really well. For instance it expects the Access-Control-Allow-Headers
     // header to be present on the GET instead of the OPTIONS request.
     // This is a workaround to make JSDOM work.
@@ -28,6 +24,10 @@ module.exports = class Server {
       }
 
       next();
+    });
+    
+    this.express.get('*', (req, res) => {
+      this.getHandler(req, res);
     });
   }
 
