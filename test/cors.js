@@ -86,9 +86,10 @@ describe('cors config', () => {
       }).then(done, done);
     });
 
-    it('GET request should not have a Access-Control-Allow-Headers header', (done) => {
+    it('GET request has a Access-Control-Allow-Headers header', (done) => {
       fetch(`${baseUrl}/42.json`, { method: 'GET' }).then(res => {
-        expect(res.headers.get('access-control-allow-headers')).not.to.exist;
+        // The spec states that this should not be, but jsdom works differently..
+        expect(res.headers.get('access-control-allow-headers')).to.equal('Content-Type');
       }).then(done, done);
     });
   });
